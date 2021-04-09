@@ -48,6 +48,12 @@ const Card = (article) => {
 
   divGrandChild.appendChild(img);
 
+  div.addEventListener('click', (event) => {
+
+    console.log(headline);
+
+  });
+
   return div;
 
 };
