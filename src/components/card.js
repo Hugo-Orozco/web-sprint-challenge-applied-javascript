@@ -1,4 +1,5 @@
 const Card = (article) => {
+
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -17,9 +18,42 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
-}
+
+  const { headline, authorPhoto, authorName } = article;
+
+  const div = document.createElement('div');
+  div.className = 'card';
+
+  const divChild = document.createElement('div');
+  divChild.className = 'headline';
+  divChild.textContent = headline;
+
+  const divChild2 = document.createElement('div');
+  divChild2.className = 'author';
+
+  const divGrandChild = document.createElement('div');
+  divGrandChild.className = 'img-container';
+
+  const span = document.createElement('span');
+  span.textContent = `By ${authorName}`;
+
+  const img = document.createElement('img');
+  img.src = authorPhoto;
+
+  div.appendChild(divChild);
+  div.appendChild(divChild2);
+
+  divChild2.appendChild(divGrandChild);
+  divChild2.appendChild(span);
+
+  divGrandChild.appendChild(img);
+
+  return div;
+
+};
 
 const cardAppender = (selector) => {
+
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
@@ -28,6 +62,33 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
-}
 
-export { Card, cardAppender }
+  const query = document.querySelector(selector);
+
+  const axios = require('axios').default;
+
+  const endpoint = 'https://lambda-times-api.herokuapp.com/articles';
+
+  axios.get(endpoint).then((response) => {
+
+    const data = response.data;
+
+    const articles = data.articles;
+
+    const values = Object.values(articles);
+
+    values.forEach((value) => {
+
+      value.forEach((article) => {
+
+        query.appendChild(Card(article));
+
+      });
+
+    });
+
+  });
+
+};
+
+export { Card, cardAppender };
